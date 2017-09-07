@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -48,12 +49,13 @@ public class AppConfig {
 	        HibernateJpaVendorAdapter jpaVendorAdapter=new HibernateJpaVendorAdapter();  
 	        jpaVendorAdapter.setGenerateDdl(true);  
 	        jpaVendorAdapter.setShowSql(true);  
+	        jpaVendorAdapter.setDatabase(Database.MYSQL);
 	        Properties jpaProperties=new Properties();  
 	        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");//validate,create,create-drop  
 	        System.out.println("mysql的Dialect是:"+env.getProperty("hibernate.dialect"));
 	        
-	        jpaProperties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
-	        jpaProperties.setProperty("hibernate.show_sql","false");
+//	        jpaProperties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
+//	        jpaProperties.setProperty("hibernate.show_sql","false");
 //	        jpaProperties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
 //	        jpaProperties.setProperty("hibernate.jdbc.fetch_size", "50");
 //	        jpaProperties.setProperty("hibernate.jdbc.batch_size", "50");

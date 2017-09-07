@@ -39,13 +39,14 @@ public class Security extends WebSecurityConfigurerAdapter{
 	    protected void configure(HttpSecurity http) throws Exception {  
 	        http  
 	        .authorizeRequests()  
-	        .antMatchers("/j_spring_security_login").permitAll()//访问：/home 无需登录认证权限  
+	        .antMatchers("/index").hasAuthority("ROLE_ADMIN")
+	        //.antMatchers("/j_spring_security_login").permitAll()//访问：/home 无需登录认证权限  
 	        .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问  
-	        .antMatchers("/admin/index").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示  
+	         //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示  
 	        .and()  
 	        .formLogin()  
 	        .loginPage("/login")//指定登录页是”/login”
-	        .loginProcessingUrl("j_spring_security_login")
+	        //.loginProcessingUrl("j_spring_security_login")
 	        .failureUrl("/login?error")
 	        .successHandler(getLoginSuccessHandler())//登录成功后可使用loginSuccessHandler()存储用户信息，可选。  
 	        .usernameParameter("j_username")

@@ -21,7 +21,7 @@
     
     <div class="container text-center loginContainer">
     	<p class="loginTip" ></p>
-  		<form class="form-horizontal loginForm" action="<%=path%>/j_spring_security_login" method="post" id="loginId">
+  		<form class="form-horizontal loginForm" action="<%=path%>/login" method="post" id="loginId">
   			<div class="form-group">
 			    	<div class="input-group">
 				      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>  					
