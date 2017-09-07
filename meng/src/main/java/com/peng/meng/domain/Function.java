@@ -27,7 +27,7 @@ public class Function {
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
 	}
-
+	@Column(name="parent_id")
 	private String parentId;
 	
 	@ManyToMany(mappedBy="functions")

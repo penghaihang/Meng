@@ -50,6 +50,20 @@ public class AppConfig {
 	        jpaVendorAdapter.setShowSql(true);  
 	        Properties jpaProperties=new Properties();  
 	        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");//validate,create,create-drop  
+	        System.out.println("mysql的Dialect是:"+env.getProperty("hibernate.dialect"));
+	        
+	        jpaProperties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect");
+	        jpaProperties.setProperty("hibernate.show_sql","false");
+//	        jpaProperties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+//	        jpaProperties.setProperty("hibernate.jdbc.fetch_size", "50");
+//	        jpaProperties.setProperty("hibernate.jdbc.batch_size", "50");
+//	        jpaProperties.setProperty("hibernate.cache.use_second_level_cache", "true");
+//	        jpaProperties.setProperty("hibernate.cache.use_query_cache", "true");
+	        //jpaProperties.setProperty("hibernate.cache.region.factory_class", org.hibernate..SingletonEhCacheRegionFactory.getName());
+	        //jpaProperties.setProperty("javax.persistence.sharedCache.mode", "ENABLE_SELECTIVE");
+	        //jpaProperties.setProperty("net.sf.ehcache.configurationResourceName", "/ehcache.xml");
+	        //jpaProperties.setProperty("hibernate.generate_statistics", "false");
+	      
 	        LocalContainerEntityManagerFactoryBean emf=new LocalContainerEntityManagerFactoryBean();  
 	        emf.setDataSource(dataSource());  
 	        emf.setPackagesToScan("com.peng.meng.domain");  
