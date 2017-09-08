@@ -25,17 +25,17 @@
   			<div class="form-group">
 			    	<div class="input-group">
 				      <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>  					
-				      <input value="user" type="text" name="j_username" class="form-control JV_Required" id="inputName" placeholder="请输入账号[邮箱]" aria-describedby="basic-addon1">		      
+				      <input value="peng" type="text" name="j_username" class="form-control JV_Required" id="inputName" placeholder="请输入账号[邮箱]" aria-describedby="basic-addon1">		      
 			    	</div>
 			</div>
 		  <div class="form-group">
 		    	<div class="input-group">
 				    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>  					
-		      		<input value="password" type="password" name="j_password" class="form-control JV_Required JV_Password" id="inputPassword" placeholder="请输入密码" aria-describedby="basic-addon2">
+		      		<input value="abc125" type="password" name="j_password" class="form-control JV_Required JV_Password" id="inputPassword" placeholder="请输入密码" aria-describedby="basic-addon2">
 		      	</div>
 		  </div>
 		  <div class="form-group"> <!-- id="loginBtn" -->
-		      <input type="submit"  class="btn btn-primary " value="登陆" />
+		      <input type="submit"  class="btn btn-primary btnSubmit" value="登陆" />
 		  </div>
 		  <div class="form-group">
 		  	<a target="_blank" href="<%=basePath%>user/register.jsp">没有账号？立刻注册</a>

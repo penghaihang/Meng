@@ -12,90 +12,95 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name="sys_user")
-public class User implements UserDetails{
+@Table(name = "sys_user")
+public class User implements UserDetails {
 
-	@Id
-	@Column(name="user_id")
-	private String userId;
-	
-	@Column(name="username")
-	private String username;
-	@Column(name="password")
-	private String password;
-	
-	
+  @Id
+  @Column(name = "user_id")
+  private String userId;
 
-	@ManyToMany
-	@JoinTable(name="sys_user_role",joinColumns=@JoinColumn(columnDefinition="user_id",referencedColumnName="user_id")
-	,inverseJoinColumns=@JoinColumn(columnDefinition="role_id",referencedColumnName="role_id"))
-	private List<Role> roleList = new ArrayList<Role>();
+  @Column(name = "username")
+  private String username;
+  @Column(name = "password")
+  private String password;
 
-	public String getUserId() {
-		return userId;
-	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 
-	public String getUsername() {
-		return username;
-	}
+  @ManyToMany
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @JoinTable(name = "sys_user_role", joinColumns = @JoinColumn(columnDefinition = "user_id",
+      referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(
+      columnDefinition = "role_id", referencedColumnName = "role_id"))
+  private List<Role> roleList = new ArrayList<Role>();
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public String getUserId() {
+    return userId;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public List<Role> getRoleList() {
-		return roleList;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public void setRoleList(List<Role> roleList) {
-		this.roleList = roleList;
-	}
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public List<Role> getRoleList() {
+    return roleList;
+  }
+
+  public void setRoleList(List<Role> roleList) {
+    this.roleList = roleList;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    return null;
+
+
+    return roleList;
   }
 
   @Override
   public boolean isAccountNonExpired() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
-	
-	
+
+
 }
