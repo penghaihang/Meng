@@ -1,9 +1,9 @@
 /meng
 
-/target
-/.classpath
+/meng/target
+/meng/.classpath
 /------
-/.settings
-/bin
-/src/main/webapp/WEB-INF/classes
+/meng/.settings
+/meng/bin
+/meng/src/main/webapp/WEB-INF/classes
 /----
