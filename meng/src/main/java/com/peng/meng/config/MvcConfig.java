@@ -1,19 +1,23 @@
 package com.peng.meng.config;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
+import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 @Configuration
 // spring mvc controller扫描
@@ -55,13 +59,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
   }
 
-  @Bean
-  public InternalResourceViewResolver internalResourceViewResolver() {
-    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-    resolver.setPrefix("/");
-    resolver.setSuffix(".jsp");
-    return resolver;
-  }
+  /*
+   * @Bean public InternalResourceViewResolver internalResourceViewResolver() {
+   * InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+   * resolver.setPrefix("/"); resolver.setSuffix(".jsp"); return resolver; }
+   */
 
   @Bean
   public MultipartResolver multipartResolver() {
@@ -71,6 +73,35 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     return bean;
   }
 
+  @Bean
+  public VelocityConfigurer velocityConfig() {
+    VelocityConfigurer velocityConfig = new VelocityConfigurer();
+    velocityConfig.setResourceLoaderPath("/");
+    velocityConfig.setConfigLocation(new ClassPathResource("/velocity.properties"));
+    Properties properties = new Properties();
+    properties.put("input.encoding", "UTF-8");
+    properties.put("output.encoding", "UTF-8");
+    // properties.put("eventhandler.include.class",
+    // com/comwave/core/velocity/OptionalIncludeEventHandler.getName());
+    velocityConfig.setVelocityProperties(properties);
+    return velocityConfig;
+  }
+
+  @Bean
+  public ViewResolver viewResolver() {
+    VelocityViewResolver viewResolver = new VelocityViewResolver();
+    viewResolver.setOrder(1);
+    viewResolver.setRequestContextAttribute("request");
+    viewResolver.setCache(true);
+    viewResolver.setPrefix("velocity");
+    viewResolver.setSuffix(".vm");
+    viewResolver.setExposeSpringMacroHelpers(true);
+    viewResolver.setContentType("text/html;charset=UTF-8");
+    viewResolver.setNumberToolAttribute("numberFormat");
+    viewResolver.setDateToolAttribute("dateTool");
+    // viewResolver.setAttributesMap(getVelocityAttributeMap());
+    return viewResolver;
+  }
 
 
   // @Bean

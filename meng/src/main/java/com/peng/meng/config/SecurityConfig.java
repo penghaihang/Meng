@@ -1,5 +1,8 @@
 package com.peng.meng.config;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +31,9 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+  @Resource
+  private DataSource dataSource;
 
   @Override
   public void configure(WebSecurity web) throws Exception {
@@ -36,21 +44,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/index").hasAuthority("ROLE_ADMIN")
+    http.authorizeRequests()
+        .antMatchers("/index")
+        .hasAuthority("ROLE_ADMIN")
         // .antMatchers("/j_spring_security_login").permitAll()//访问：/home 无需登录认证权限
         .anyRequest()
         .authenticated()
         // 其他所有资源都需要认证，登陆后访问
         // 登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
-        .and().formLogin()
+        .and()
+        .formLogin()
         .loginPage("/login")
         // 指定登录页是”/login”
         // .loginProcessingUrl("j_spring_security_login")
-        .successHandler(getLoginSuccessHandler()).failureUrl("/login?error")
+        .successHandler(getLoginSuccessHandler())
+        .failureUrl("/login?error")
         // 登录成功后可使用loginSuccessHandler()存储用户信息，可选。
         .usernameParameter("j_username").passwordParameter("j_password").permitAll().and().logout()
-        .logoutUrl("/logout").logoutSuccessUrl("/login") // 退出登录后的默认网址是”/home”
-        .permitAll().invalidateHttpSession(true).and().rememberMe()// 登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
+        .logoutUrl("/logout").logoutSuccessUrl("/login")
+        // 退出登录后的默认网址是”/home”
+        .permitAll().invalidateHttpSession(true).and().rememberMe()
+        .tokenRepository(persistentTokenRepository())// 登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
         .tokenValiditySeconds(1209600);
 
     http.csrf().disable();
@@ -97,7 +111,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // .withUser("user").password("password").roles("ADMIN");
   // }
 
-
+  // 如果采用持久化 token 的方法则需要指定保存token的方法
+  @Bean
+  public PersistentTokenRepository persistentTokenRepository() {
+    JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+    db.setDataSource(dataSource);
+    return db;
+  }
 
   @Bean
   public LoggerListener loggerListener() {

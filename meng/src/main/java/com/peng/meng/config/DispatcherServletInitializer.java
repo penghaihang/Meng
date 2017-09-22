@@ -24,7 +24,7 @@ public class DispatcherServletInitializer extends
 
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class<?>[] {AppConfig.class, Security.class};
+    return new Class<?>[] {AppConfig.class, SecurityConfig.class};
   }
 
   @Override
